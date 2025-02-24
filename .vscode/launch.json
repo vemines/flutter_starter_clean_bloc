@@ -1,0 +1,56 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Ui debug",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/ui/main.dart",
+      "flutterMode": "debug",
+      "args": ["-d", "chrome"]
+    },
+    {
+      "name": "Run Development (dev)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_development.dart",
+      "flutterMode": "debug"
+    },
+    {
+      "name": "Run Staging (staging)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_staging.dart",
+      "flutterMode": "debug"
+    },
+    {
+      "name": "Run Production (prod)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_production.dart",
+      "flutterMode": "debug"
+    },
+    {
+      "name": "Run Profile Development",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_development.dart",
+      "flutterMode": "profile",
+      "args": []
+    },
+    {
+      "name": "Run Release Development",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_development.dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "Run All Tests",
+      "request": "launch",
+      "type": "dart",
+      "program": "test/", // Run all tests in the test directory
+      "flutterMode": "debug"
+    }
+  ]
+}
