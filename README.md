@@ -2,7 +2,7 @@
 
 ## About
 
-This project is a Flutter starter template implementing **Clean Architecture** with **BLoC** (Business Logic Component) pattern for state management. It demonstrates scalable structure for building Flutter applications with **up-to-date** 3rd. Api intergrate with mock backend running with **json_server**.
+This project is a Flutter starter template implementing **Clean Architecture** with **BLoC** (Business Logic Component) pattern for state management. It demonstrates scalable structure for building Flutter applications with **up-to-date** 3rd package. Api intergrate with mock backend running with **json_server**.
 
 ## Process
 
@@ -13,7 +13,7 @@ This project is a Flutter starter template implementing **Clean Architecture** w
 - [x] Complete prototype feature
 - [x] Fixing test
 - [x] Complete all feature
-- [ ] Complete all test
+- [x] Complete all test
 - [ ] Complete ui
 
 ## Packages Used
@@ -44,8 +44,8 @@ go_router, flutter_bloc, shared_preferences, flutter_secure_storage, get_it, dio
 1.  **Clone the repository:**
 
     ```bash
-    git clone <your-repository-url>
-    cd <your-project-directory>
+    git clone https://github.com/vemines/flutter_starter_clean_bloc
+    cd flutter_starter_clean_bloc
     ```
 
 2.  **Install dependencies:**
@@ -54,7 +54,15 @@ go_router, flutter_bloc, shared_preferences, flutter_secure_storage, get_it, dio
     flutter pub get
     ```
 
-3.  **Run the application (choose your flavor):**
+3.  **Run json-server**
+
+    ```bash
+    cd json-server
+    npm run gen
+    npm run dev     or npm start
+    ```
+
+4.  **Run the application (choose your flavor):**
 
         - **Development:**
           flutter run lib/main_development.dart
@@ -65,7 +73,7 @@ go_router, flutter_bloc, shared_preferences, flutter_secure_storage, get_it, dio
         - **Production:**
           `flutter run lib/main_production.dart
 
-    Different`main*\*` files are used for different build configurations (flavors).
+    Different`main*\*` files are used for different build configurations [flavors](lib/configs/flavor_config.dart).
 
 ## App Structure
 
@@ -102,16 +110,16 @@ The project follows a Clean Architecture structure, separating concerns into lay
 
   - `data`:
     - `datasources`: Handles data retrieval and storage (local and remote).
-    - `models`: Data models that extend the domain entities and include methods for serialization/deserialization (e.g., `fromJson`, `toJson`).
+    - `models`: Data models that extend the domain entities and include methods for serialization/deserialization (e.g., `fromJson`, `toJson`, `fromEntity`, `copyWith`).
     - `repositories`: Implementation of the repository interfaces, handling data access logic.
   - `domain`:
-    - `entities`: Business objects representing core concepts (e.g., `User`, `Post`, `Comment`).
+    - `entities`: Business objects representing core concepts (e.g., `Auth`, `User`, `Post`, `Comment`).
     - `repositories`: Abstract interfaces defining how data should be accessed.
     - `usecases`: Specific business logic operations (e.g., `LoginUseCase`, `GetAllPostsUseCase`).
   - `presentation`:
     - `bloc`: BLoCs that manage the state of the feature's UI.
-    - `pages`: (Not in the provided code, but would typically be here) UI screens for the feature.
-    - `widgets`: (Not in the provided code, but would typically be here) UI widgets specific to the feature.
+    - `pages`: UI screens for the feature.
+    - `widgets`: UI widgets specific to the feature.
 
 - **`injection_container.dart`:** Sets up dependency injection using `get_it`.
 
@@ -120,6 +128,11 @@ The project follows a Clean Architecture structure, separating concerns into lay
 ### Flavors
 
 The project uses flavors to manage different build configurations. This allows you to have different settings (e.g., API endpoints, request Timeout) for development, staging, and production environments. The `FlavorService` and `FlavorConfig` classes handle this.
+
+```dart
+// Usage:
+FlavorService.instance.config.nameConfig
+```
 
 ## Localization
 
@@ -160,4 +173,4 @@ flutter test
 
 ## Note
 
-**1. If create web app should rename assets folder to avoid builded web assets/assets/ eg: app_assets,...**
+**1. If create web app should rename assets folder to avoid builded web assets/assets/ eg: resource,...**

@@ -6,7 +6,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.0-312.0.dev
+  sdk: ^3.6.0
 
 dependencies:
   cached_network_image: ^3.4.1
@@ -41,8 +41,8 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/lang/
-    - assets/images/
+    - resources/lang/
+    - resources/images/
   #   - images/a_dot_ham.jpeg
   # To add custom fonts to your application, add a fonts section here
   # fonts:
