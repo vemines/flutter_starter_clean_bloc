@@ -26,10 +26,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       return AuthModel.fromJson(response.data);
-    } on DioException catch (e) {
-      handleDioException(e, 'login(LoginParams params)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'login(LoginParams params)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -41,10 +41,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         data: {'username': params.userName, 'email': params.email, 'password': params.password},
       );
       return AuthModel.fromJson(response.data);
-    } on DioException catch (e) {
-      handleDioException(e, 'register(RegisterParams params)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'register(RegisterParams params)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 

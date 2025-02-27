@@ -9,8 +9,6 @@ abstract class PostEvent extends Equatable {
 
 class GetAllPostsEvent extends PostEvent {}
 
-class LoadMorePostsEvent extends PostEvent {}
-
 class GetPostByIdEvent extends PostEvent {
   final int id;
   const GetPostByIdEvent({required this.id});
@@ -54,10 +52,4 @@ class GetBookmarkedPostsEvent extends PostEvent {
   List<Object> get props => [bookmarksId];
 }
 
-// class BookmarkPostEvent extends PostEvent {
-//   final int postId;
-//   final int userId;
-//   const BookmarkPostEvent({required this.postId, required this.userId});
-//   @override
-//   List<Object> get props => [postId, userId];
-// }
+//

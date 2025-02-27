@@ -12,9 +12,9 @@ class ThemeCubit extends Cubit<ThemeData> {
 
   // Constants for theme keys
   static const String _themeKey = 'themeMode';
-  static const String lightThemeKey = 'light';
-  static const String darkThemeKey = 'dark';
-  static const String customThemeKey = 'custom';
+  static const String lightThemeKey = 'Light Theme';
+  static const String darkThemeKey = 'Dark Theme';
+  static const String customThemeKey = 'Custom Theme';
 
   Future<void> _loadInitialTheme() async {
     final prefs = await SharedPreferences.getInstance();
@@ -25,7 +25,7 @@ class ThemeCubit extends Cubit<ThemeData> {
     } else if (savedTheme == customThemeKey) {
       emit(AppTheme.customTheme);
     } else {
-      emit(AppTheme.lightTheme); // Default to light theme
+      emit(AppTheme.lightTheme);
     }
   }
 
@@ -44,5 +44,12 @@ class ThemeCubit extends Cubit<ThemeData> {
         emit(AppTheme.customTheme);
         break;
     }
+  }
+
+  static String themeToString(ThemeData theme) {
+    if (theme == AppTheme.lightTheme) return lightThemeKey;
+    if (theme == AppTheme.darkTheme) return darkThemeKey;
+    if (theme == AppTheme.customTheme) return customThemeKey;
+    return "Undefined Theme";
   }
 }

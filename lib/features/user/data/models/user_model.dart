@@ -1,4 +1,4 @@
-import 'package:flutter_starter_clean_bloc/core/utils/num_utils.dart';
+import '../../../../core/utils/num_utils.dart';
 
 import '../../../../core/constants/api_mapping.dart';
 import '../../domain/entities/user_entity.dart';
@@ -12,6 +12,8 @@ class UserModel extends UserEntity {
     required super.avatar,
     required super.bookmarksId,
     required super.friendsId,
+    required super.cover,
+    required super.about,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -21,6 +23,8 @@ class UserModel extends UserEntity {
       userName: json[UserApiMap.kUserName] as String,
       email: json[UserApiMap.kEmail] as String,
       avatar: json[UserApiMap.kAvatar] as String,
+      cover: json[UserApiMap.kCover] as String,
+      about: json[UserApiMap.kAbout] as String,
       bookmarksId:
           (json[UserApiMap.kBookmarksId] as List<dynamic>).map((e) => intParse(value: e)).toList(),
       friendsId:
@@ -35,8 +39,10 @@ class UserModel extends UserEntity {
       userName: user.userName,
       email: user.email,
       avatar: user.avatar,
+      cover: user.cover,
       bookmarksId: user.bookmarksId,
       friendsId: user.friendsId,
+      about: user.about,
     );
   }
 
@@ -47,8 +53,10 @@ class UserModel extends UserEntity {
       UserApiMap.kUserName: userName,
       UserApiMap.kEmail: email,
       UserApiMap.kAvatar: avatar,
+      UserApiMap.kCover: cover,
       UserApiMap.kBookmarksId: bookmarksId,
       UserApiMap.kFriendIds: friendsId,
+      UserApiMap.kAbout: about,
     };
   }
 
@@ -59,6 +67,8 @@ class UserModel extends UserEntity {
     String? userName,
     String? email,
     String? avatar,
+    String? cover,
+    String? about,
     List<int>? bookmarksId,
     List<int>? friendsId,
   }) {
@@ -68,6 +78,8 @@ class UserModel extends UserEntity {
       userName: userName ?? this.userName,
       email: email ?? this.email,
       avatar: avatar ?? this.avatar,
+      cover: cover ?? this.cover,
+      about: about ?? this.about,
       bookmarksId: bookmarksId ?? this.bookmarksId,
       friendsId: friendsId ?? this.friendsId,
     );

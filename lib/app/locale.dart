@@ -11,6 +11,38 @@ import 'package:flutter/services.dart';
 class I18nKeys {
   static const String greeting = 'greeting';
   static const String name = 'name';
+  static const String posts = 'posts';
+  static const String search = 'search';
+  static const String users = 'users';
+  static const String settings = 'settings';
+  static const String login = 'login';
+  static const String register = 'register';
+  static const String logout = 'logout';
+  static const String postDetail = 'post_detail';
+  static const String userDetail = 'user_detail';
+  static const String noPostsFound = 'no_posts_found';
+  static const String addComment = 'add_comment';
+  static const String sendComment = 'send_comment';
+  static const String theme = 'theme';
+  static const String language = 'language';
+  static const String light = 'light';
+  static const String dark = 'dark';
+  static const String custom = 'custom';
+  static const String english = 'english';
+  static const String vietnamese = 'vietnamese';
+  static const String userProfile = 'user_profile';
+  static const String editComment = 'edit_comment';
+  static const String updateComment = 'update_comment';
+  static const String cancel = 'cancel';
+  static const String update = 'update';
+  static const String deleteComment = 'delete_comment';
+  static const String delete = 'delete';
+  static const String areYouSureDeleteComment = "are_you_sure_delete_comment";
+  static const String select = "select";
+  static const String bookmarkedPosts = "bookmarked_posts";
+  static const String noBookmarkedPosts = "no_bookmarked_posts";
+  static const String comments = "comments";
+  static const String loginToComment = "login_to_comment";
 }
 
 class AppLocalizations {
@@ -29,9 +61,7 @@ class AppLocalizations {
   late Map<String, String> _localizedStrings;
 
   Future<bool> load() async {
-    String jsonString = await rootBundle.loadString(
-      'resources/lang/${locale.languageCode}.json',
-    ); //use assets/lang
+    String jsonString = await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
     _localizedStrings = jsonMap.map((key, value) {

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_starter_clean_bloc/core/constants/enum.dart';
 
 import '../../../../core/constants/api_endpoints.dart';
 import '../../../../core/errors/exceptions.dart';
@@ -29,15 +30,15 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
           '_page': params.page,
           '_limit': params.limit,
           '_sort': 'createdAt',
-          '_order': 'desc',
+          '_order': params.order.getString(),
         },
       );
-      final List<dynamic> data = response.data;
+      List<dynamic> data = response.data;
       return data.map((e) => PostModel.fromJson(e)).toList();
-    } on DioException catch (e) {
-      handleDioException(e, 'getAllPosts(PaginationParams params)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'getAllPosts(PaginationParams params)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -46,10 +47,10 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     try {
       final response = await dio.get(ApiEndpoints.singlePost(id));
       return PostModel.fromJson(response.data);
-    } on DioException catch (e) {
-      handleDioException(e, 'getPostById(int id)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'getPostById(int id)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -58,10 +59,10 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     try {
       final response = await dio.post(ApiEndpoints.posts, data: post.toJson());
       return PostModel.fromJson(response.data);
-    } on DioException catch (e) {
-      handleDioException(e, 'createPost(PostModel post)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'createPost(PostModel post)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -70,10 +71,10 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     try {
       final response = await dio.put(ApiEndpoints.singlePost(post.id), data: post.toJson());
       return PostModel.fromJson(response.data);
-    } on DioException catch (e) {
-      handleDioException(e, 'updatePost(PostModel post)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'updatePost(PostModel post)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -82,10 +83,10 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     try {
       await dio.delete(ApiEndpoints.singlePost(id));
       return;
-    } on DioException catch (e) {
-      handleDioException(e, 'deletePost(int id)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'deletePost(int id)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -104,10 +105,10 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       );
       final List<dynamic> data = response.data;
       return data.map((e) => PostModel.fromJson(e)).toList();
-    } on DioException catch (e) {
-      handleDioException(e, 'searchPosts(PaginationWithSearchParams params)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'searchPosts(PaginationWithSearchParams params)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -117,10 +118,10 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       final response = await dio.get(ApiEndpoints.posts, queryParameters: {'id': params.ids});
       final List<dynamic> data = response.data;
       return data.map((e) => PostModel.fromJson(e)).toList();
-    } on DioException catch (e) {
-      handleDioException(e, 'getPostsByIds(List<int> ids)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'getPostsByIds(List<int> ids)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 }

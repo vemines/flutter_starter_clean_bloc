@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_starter_clean_bloc/core/constants/enum.dart';
 
 import '../../../../core/constants/api_endpoints.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../domain/usecases/add_comment_usecase.dart';
+import '../../domain/usecases/get_comments_by_post_id_usecase.dart';
 import '../models/comment_model.dart';
 
 abstract class CommentRemoteDataSource {
-  Future<List<CommentModel>> getCommentsByPostId(int postId);
+  Future<List<CommentModel>> getCommentsByPostId(GetCommentsParams params);
   Future<CommentModel> addComment(AddCommentParams params);
   Future<CommentModel> updateComment(CommentModel comment);
   Future<void> deleteComment(CommentModel comment);
@@ -17,14 +19,22 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
   CommentRemoteDataSourceImpl({required this.dio});
 
   @override
-  Future<List<CommentModel>> getCommentsByPostId(int postId) async {
+  Future<List<CommentModel>> getCommentsByPostId(GetCommentsParams params) async {
     try {
-      final response = await dio.get(ApiEndpoints.getCommentsByPostId(postId: postId));
+      final response = await dio.get(
+        ApiEndpoints.getCommentsByPostId(postId: params.postId),
+        queryParameters: {
+          '_page': params.page,
+          '_limit': params.limit,
+          '_sort': 'createdAt',
+          '_order': params.order.getString(),
+        },
+      );
       return (response.data as List).map((e) => CommentModel.fromJson(e)).toList();
-    } on DioException catch (e) {
-      handleDioException(e, 'getCommentsByPostId(int postId)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'getCommentsByPostId(int postId)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -36,10 +46,10 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
         data: {'userId': params.userId, 'body': params.body},
       );
       return CommentModel.fromJson(response.data);
-    } on DioException catch (e) {
-      handleDioException(e, 'addComment(int postId, int userId, String body)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'addComment(int postId, int userId, String body)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -51,10 +61,10 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
         data: {'userId': comment.user.id, 'body': comment.body},
       );
       return CommentModel.fromJson(response.data);
-    } on DioException catch (e) {
-      handleDioException(e, 'updateComment(CommentModel comment)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'updateComment(CommentModel comment)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -63,10 +73,10 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
     try {
       await dio.delete(ApiEndpoints.singleComment(comment.id), data: {'userId': comment.user.id});
       return;
-    } on DioException catch (e) {
-      handleDioException(e, 'deleteComment(CommentModel comment)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'deleteComment(CommentModel comment)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 }

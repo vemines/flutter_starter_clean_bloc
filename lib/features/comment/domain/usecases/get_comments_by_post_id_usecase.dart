@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/usecase/usecase.dart';
@@ -17,11 +16,13 @@ class GetCommentsByPostIdUseCase implements UseCase<List<CommentEntity>, GetComm
   }
 }
 
-class GetCommentsParams extends Equatable {
+class GetCommentsParams extends PaginationParams {
   final int postId;
 
-  const GetCommentsParams({required this.postId});
-
-  @override
-  List<Object?> get props => [postId];
+  const GetCommentsParams({
+    required this.postId,
+    required super.page,
+    required super.limit,
+    super.order,
+  });
 }

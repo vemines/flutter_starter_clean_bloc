@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 class PostEntity extends Equatable {
   final int id;
@@ -8,8 +9,9 @@ class PostEntity extends Equatable {
   final String imageUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final Key key;
 
-  const PostEntity({
+  PostEntity({
     required this.id,
     required this.userId,
     required this.title,
@@ -17,7 +19,7 @@ class PostEntity extends Equatable {
     required this.imageUrl,
     required this.createdAt,
     required this.updatedAt,
-  });
+  }) : key = UniqueKey();
 
   @override
   List<Object?> get props => [id, userId, title, body, imageUrl, createdAt, updatedAt];

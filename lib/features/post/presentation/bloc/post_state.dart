@@ -17,13 +17,36 @@ class PostsLoaded extends PostState {
   const PostsLoaded({required this.posts, required this.hasMore});
   @override
   List<Object> get props => [posts, hasMore];
+
+  PostsLoaded copyWith({List<PostEntity>? posts, bool? hasMore}) {
+    return PostsLoaded(
+      posts: posts != null ? [...this.posts, ...posts] : this.posts,
+      hasMore: hasMore ?? this.hasMore,
+    );
+  }
+}
+
+class PostsSearchLoaded extends PostState {
+  final List<PostEntity> posts;
+  final bool hasMore;
+  final String query;
+  const PostsSearchLoaded({required this.posts, required this.hasMore, required this.query});
+  @override
+  List<Object> get props => [posts, hasMore, query];
+
+  PostsLoaded copyWith({List<PostEntity>? posts, bool? hasMore}) {
+    return PostsLoaded(
+      posts: posts != null ? [...this.posts, ...posts] : this.posts,
+      hasMore: hasMore ?? this.hasMore,
+    );
+  }
 }
 
 class PostLoaded extends PostState {
-  final PostEntity posts;
-  const PostLoaded({required this.posts});
+  final PostEntity post;
+  const PostLoaded({required this.post});
   @override
-  List<Object> get props => [posts];
+  List<Object> get props => [post];
 }
 
 class PostError extends PostState {

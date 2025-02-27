@@ -9,8 +9,9 @@ part 'repository_exception_handle.dart';
 class ServerException implements Exception {
   final String? message;
   final int? statusCode;
+  final StackTrace? stackTrace;
 
-  ServerException({this.message, this.statusCode});
+  ServerException({this.message, this.statusCode, this.stackTrace});
 }
 
 extension ServerExceptionToFailure on ServerException {
@@ -18,6 +19,7 @@ extension ServerExceptionToFailure on ServerException {
     return ServerFailure(
       message: message ?? this.message ?? kServerFailureMessage,
       code: statusCode?.toString() ?? '-1',
+      stackTrace: stackTrace,
     );
   }
 }
@@ -34,10 +36,10 @@ class CacheException implements Exception {
 
 class InvalidCredentialsException implements Exception {
   final String message;
-  InvalidCredentialsException({this.message = kInvalidCredentialsExceptionMessage});
+  InvalidCredentialsException({this.message = kInvalidCredentialsFailureMessage});
 }
 
 class UnauthenticatedException implements Exception {
   final String message;
-  UnauthenticatedException({this.message = kUnauthenticatedFailure});
+  UnauthenticatedException({this.message = kUnauthenticatedFailureMessage});
 }

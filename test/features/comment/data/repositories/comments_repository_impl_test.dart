@@ -44,14 +44,14 @@ void main() {
           () => mockRemoteDataSource.getCommentsByPostId(any()),
         ).thenAnswer((_) async => tCommentModels);
         final result = await repository.getCommentsByPostId(tGetCommentsParams);
-        verify(() => mockRemoteDataSource.getCommentsByPostId(tGetCommentsParams.postId));
+        verify(() => mockRemoteDataSource.getCommentsByPostId(tGetCommentsParams));
         expect(result, equals(Right(tCommentModels)));
       });
 
       test('should return server failure on unsuccessful call', () async {
         when(() => mockRemoteDataSource.getCommentsByPostId(any())).thenThrow(tServerException);
         final result = await repository.getCommentsByPostId(tGetCommentsParams);
-        verify(() => mockRemoteDataSource.getCommentsByPostId(tGetCommentsParams.postId));
+        verify(() => mockRemoteDataSource.getCommentsByPostId(tGetCommentsParams));
         expect(result, equals(Left(tServerFailure)));
       });
     });

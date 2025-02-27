@@ -41,19 +41,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     final result = await loginUseCase(event.params);
-    emit(_mapResultToAuthLoaded(result, '_onLogin - Fail to login user'));
+    emit(_mapResultToAuthLoaded(result, '_onLogin(LoginEvent event, Emitter<AuthState> emit)'));
   }
 
   Future<void> _onRegister(RegisterEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     final result = await registerUseCase(event.params);
-    emit(_mapResultToAuthLoaded(result, '_onRegister - Fail to register user'));
+    emit(
+      _mapResultToAuthLoaded(result, '_onRegister(RegisterEvent event, Emitter<AuthState> emit)'),
+    );
   }
 
   Future<void> _onGetLoggedInUser(GetLoggedInUserEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     final result = await getLoggedInUserUseCase(NoParams());
-    emit(_mapResultToAuthLoaded(result, '_onGetLoggedInUser - Fail to get local logged user'));
+    emit(
+      _mapResultToAuthLoaded(
+        result,
+        '_onGetLoggedInUser(GetLoggedInUserEvent event, Emitter<AuthState> emit)',
+      ),
+    );
   }
 
   Future<void> _onLogout(LogoutEvent event, Emitter<AuthState> emit) async {
@@ -72,7 +79,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     await cachedAuthResult.fold(
       (failure) {
-        logService.w('$failure occur at _onVerifySecret - No cached user');
+        logService.w(
+          '$failure occur at _onVerifySecret(VerifySecretEvent event, Emitter<AuthState> emit)',
+        );
         emit(AuthError(failure: failure));
       },
       (auth) async {
@@ -86,7 +95,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(
       result.fold(
         (failure) {
-          logService.w('$failure occur at _verifySecret - Fail to verify user');
+          logService.w('$failure occur at _verifySecret(AuthEntity auth, Emitter<AuthState> emit)');
           return AuthError(failure: failure);
         },
         (isVerified) {
@@ -100,6 +109,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthState _mapResultToAuthLoaded(Either<Failure, AuthEntity> result, String errorAt) {
     return result.fold(
       (failure) {
+        if (errorAt.contains('GetLoggedInUserEvent')) {
+          return AuthInitial();
+        }
         logService.w('$failure occur at $errorAt');
         return AuthError(failure: failure);
       },

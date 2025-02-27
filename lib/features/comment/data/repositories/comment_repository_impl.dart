@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/errors/failures.dart';
 import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domain/entities/comment_entity.dart';
 import '../../domain/repositories/comment_repository.dart';
@@ -20,7 +20,7 @@ class CommentRepositoryImpl implements CommentRepository {
   Future<Either<Failure, List<CommentEntity>>> getCommentsByPostId(GetCommentsParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final comments = await remoteDataSource.getCommentsByPostId(params.postId);
+        final comments = await remoteDataSource.getCommentsByPostId(params);
         return Right(comments);
       } catch (e) {
         return Left(handleRepositoryException(e));

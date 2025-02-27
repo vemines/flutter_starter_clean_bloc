@@ -176,6 +176,8 @@ final tUserEntity = UserEntity(
   userName: 'testuser',
   email: 'test@example.com',
   avatar: 'avatar_url',
+  cover: 'cover_url',
+  about: 'about_me',
   bookmarksId: tBookmarkedIds,
   friendsId: tFriendIds,
 );
@@ -217,7 +219,8 @@ final tAddCommentParams = AddCommentParams(
   userId: tUserEntity.id,
   body: 'Test Body',
 );
-final tGetCommentsParams = GetCommentsParams(postId: tPostEntity.id);
+//
+final tGetCommentsParams = GetCommentsParams(postId: tPostEntity.id, page: 1, limit: 10);
 
 final tServerException = ServerException(message: 'ServerException', statusCode: -1);
 final tServerFailure = tServerException.toFailure();

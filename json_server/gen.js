@@ -17,7 +17,9 @@ function generateData() {
       username: faker.internet.username(),
       password: faker.internet.password(),
       email: faker.internet.email(),
+      about: faker.lorem.paragraphs(),
       avatar: 'https://i.pravatar.cc/300',
+      cover: `https://picsum.photos/800/450?random=${userIdCounter}`,
       createdAt: userDate,
       updatedAt: userDate,
       friendIds: faker.helpers.arrayElements(

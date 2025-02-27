@@ -103,13 +103,13 @@ void main() {
     );
 
     blocTest<AuthBloc, AuthState>(
-      'should emit [AuthLoading, AuthError] when get logged in user fails',
+      'should emit [AuthLoading, AuthInitial] when get logged in user fails',
       build: () {
         when(() => mockGetLoggedInUserUseCase(any())).thenAnswer((_) async => Left(tServerFailure));
         return bloc;
       },
       act: (bloc) => bloc.add(GetLoggedInUserEvent()),
-      expect: () => [AuthLoading(), AuthError(failure: tServerFailure)],
+      expect: () => [AuthLoading(), AuthInitial()],
     );
   });
 

@@ -13,12 +13,13 @@ This project is a Flutter starter template implementing **Clean Architecture** w
 - [x] Complete prototype feature
 - [x] Fixing test
 - [x] Complete all feature
-- [x] Complete all test
-- [ ] Complete ui
+- [x] Complete all test (not adapt ui yet)
+- [-] Complete ui
+- [ ] Complete all test
 
 ## Packages Used
 
-go_router, flutter_bloc, shared_preferences, flutter_secure_storage, get_it, dio, equatable, dartz, logger, cached_network_image, internet_connection_checker_plus, path_provider
+go_router, flutter_bloc, shared_preferences, flutter_secure_storage, get_it, dio, equatable, dartz, logger, cached_network_image, internet_connection_checker_plus, path_provider, google_fonts
 
 | Package                            | Description                                                                                                                                         |
 | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -28,16 +29,17 @@ go_router, flutter_bloc, shared_preferences, flutter_secure_storage, get_it, dio
 | `flutter_secure_storage`           | Secure storage for sensitive data (e.g., API tokens, user secrets).                                                                                 |
 | `get_it`                           | Service locator for dependency injection.                                                                                                           |
 | `dio`                              | Powerful HTTP client for making network requests.                                                                                                   |
+| `google_fonts`                     | Provide Google Fonts using in this app.                                                                                                             |
 | `equatable`                        | Simplifies value equality comparisons for classes.                                                                                                  |
 | `dartz`                            | Functional programming library providing features like `Either` for error handling.                                                                 |
 | `logger`                           | Logging library for debugging and monitoring application behavior.                                                                                  |
 | `cached_network_image`             | Library for efficiently caching and displaying images from the network.                                                                             |
 | `internet_connection_checker_plus` | Checks for internet connectivity.                                                                                                                   |
 | `path_provider`                    | Provides access to commonly used file system locations (documents directory, etc.). _(Note: `path_provider` versions < 2.1.5 did not support web.)_ |
-| `timeago`                          | Library for formatting dates as "time ago" strings.                                                                                                 |
 | `mocktail` (dev dependency)        | Mocking library for unit and widget testing.                                                                                                        |
 | `bloc_test` (dev dependency)       | Utilities for testing BLoCs.                                                                                                                        |
 | `flutter_lorem` (dev dependency)   | Library for generating lorem ipsum placeholder text for UI development.                                                                             |
+| `device_preview` (dev dependency)  | Library for help mock device size for develop ui                                                                                                    |
 
 ## Setup
 
@@ -173,4 +175,4 @@ flutter test
 
 ## Note
 
-**1. If create web app should rename assets folder to avoid builded web assets/assets/ eg: resource,...**
+**This Code Write with "dart.lineLength": 100 Settings. Sorry if code weird after format files**

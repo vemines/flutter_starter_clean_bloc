@@ -6,11 +6,15 @@ abstract class Failure extends Equatable {
   final String? message;
   final StackTrace? stackTrace;
   final String? code;
-  final String? at;
-  const Failure({this.message, this.code, this.stackTrace, this.at});
+  const Failure({this.message, this.code, this.stackTrace});
 
   @override
   List<Object?> get props => [message, code, stackTrace];
+
+  @override
+  String toString() {
+    return '(message: $message, code: $code)';
+  }
 }
 
 class ServerFailure extends Failure {
@@ -53,7 +57,15 @@ class InvalidInputFailure extends Failure {
 
 class UnauthenticatedFailure extends Failure {
   const UnauthenticatedFailure({
-    super.message = kUnauthenticatedFailure,
+    super.message = kUnauthenticatedFailureMessage,
+    super.stackTrace,
+    super.code,
+  });
+}
+
+class InvalidCredentialsFailure extends Failure {
+  const InvalidCredentialsFailure({
+    super.message = kInvalidCredentialsFailureMessage,
     super.stackTrace,
     super.code,
   });

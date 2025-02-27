@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../configs/configs.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
-import '../features/post/presentation/bloc/post_bloc.dart';
+import '../features/comment/presentation/bloc/comment_bloc.dart';
 import '../features/user/presentation/bloc/user_bloc.dart';
 import '../injection_container.dart';
 import 'cubits/cubits.dart';
@@ -22,9 +22,9 @@ class App extends StatelessWidget {
         BlocProvider(create: (context) => LogCubit()..initialize()),
         BlocProvider(create: (context) => LocaleCubit()),
         // Provide feature-specific BLoCs using GetIt
-        BlocProvider(create: (context) => sl<AuthBloc>()),
-        BlocProvider(create: (context) => sl<PostBloc>()..add(GetAllPostsEvent())),
+        BlocProvider(create: (context) => sl<AuthBloc>()..add(GetLoggedInUserEvent())),
         BlocProvider(create: (context) => sl<UserBloc>()),
+        BlocProvider(create: (context) => sl<CommentBloc>()),
       ],
       child: const _App(),
     );

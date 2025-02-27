@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../domain/usecases/bookmark_post_usecase.dart';
-import '../../domain/usecases/update_friend_list_usecase.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/user_repository.dart';
+import '../../domain/usecases/bookmark_post_usecase.dart';
+import '../../domain/usecases/update_friend_list_usecase.dart';
 import '../datasources/user_local_data_source.dart';
 import '../datasources/user_remote_data_source.dart';
 import '../models/user_model.dart';

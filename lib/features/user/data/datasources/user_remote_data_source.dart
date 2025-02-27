@@ -29,10 +29,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       );
       final data = response.data as List;
       return data.map((json) => UserModel.fromJson(json)).toList();
-    } on DioException catch (e) {
-      handleDioException(e, 'getAllUsers(PaginationParams params)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'getAllUsers(PaginationParams params)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -41,10 +41,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     try {
       final response = await dio.get(ApiEndpoints.singleUser(id));
       return UserModel.fromJson(response.data);
-    } on DioException catch (e) {
-      handleDioException(e, 'getUserById(int id)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'getUserById(int id)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -53,10 +53,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     try {
       final response = await dio.put(ApiEndpoints.singleUser(user.id), data: user.toJson());
       return UserModel.fromJson(response.data);
-    } on DioException catch (e) {
-      handleDioException(e, 'updateUser(UserModel user)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'updateUser(UserModel user)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -68,10 +68,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         data: {'friendIds': params.friendIds},
       );
       return;
-    } on DioException catch (e) {
-      handleDioException(e, 'updateFriendList(int userId, List<int> friendIds)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'updateFriendList(int userId, List<int> friendIds)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 
@@ -83,10 +83,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         data: {'postId': params.postId},
       );
       return;
-    } on DioException catch (e) {
-      handleDioException(e, 'updateFriendList(int userId, List<int> friendIds)');
-    } catch (e) {
-      throw ServerException(message: e.toString());
+    } on DioException catch (e, s) {
+      handleDioException(e, s, 'updateFriendList(int userId, List<int> friendIds)');
+    } catch (e, s) {
+      throw ServerException(message: e.toString(), stackTrace: s);
     }
   }
 }

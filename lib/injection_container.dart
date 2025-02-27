@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'features/comment/presentation/bloc/comment_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +53,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // Features
   // Bloc
-  sl.registerFactory(
+  sl.registerLazySingleton(
     () => AuthBloc(
       loginUseCase: sl(),
       registerUseCase: sl(),
@@ -81,6 +82,15 @@ Future<void> init() async {
       updateUserUseCase: sl(),
       updateFriendListUseCase: sl(),
       bookmarkPostUseCase: sl(),
+      logService: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => CommentBloc(
+      addComment: sl(),
+      deleteComment: sl(),
+      getCommentsByPostId: sl(),
+      updateComment: sl(),
       logService: sl(),
     ),
   );
@@ -151,7 +161,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => InternetConnection());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
 
-  sl.registerLazySingletonAsync<LogService>(() async => await LogService.instance());
+  final logService = await LogService.instance();
+  sl.registerLazySingleton<LogService>(() => logService);
 
   sl.registerLazySingleton<Dio>(() {
     final dio = Dio();
@@ -168,7 +179,8 @@ Future<void> init() async {
           return handler.next(options);
         },
         onResponse: (response, handler) {
-          sl<LogService>().d('Response: ${response.statusCode} ${response.data}');
+          // sl<LogService>().d('Response: ${response.statusCode} ${response.data}');
+          sl<LogService>().d('Response: ${response.statusCode}');
           return handler.next(response);
         },
         onError: (DioException e, handler) {

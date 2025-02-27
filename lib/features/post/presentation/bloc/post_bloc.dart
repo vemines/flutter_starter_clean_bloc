@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/pagination.dart';
 
 import '../../../../app/logs.dart';
 import '../../../../core/errors/failures.dart';
@@ -33,7 +34,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     required this.deletePost,
     required this.searchPosts,
     required this.getBookmarkedPosts,
-    // required this.bookmarkPost,
     required this.logService,
   }) : super(PostInitial()) {
     on<GetAllPostsEvent>(_onGetAllPosts);
@@ -43,59 +43,81 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<DeletePostEvent>(_onDeletePost);
     on<SearchPostsEvent>(_onSearchPosts);
     on<GetBookmarkedPostsEvent>(_onGetBookmarkedPosts);
-    on<LoadMorePostsEvent>(_onLoadMorePosts);
   }
 
-  int _currentPage = 1;
-  final int _limit = 10;
-  bool _hasMore = true;
+  final _allPostPS = PaginationStorage();
 
   Future<void> _onGetAllPosts(GetAllPostsEvent event, Emitter<PostState> emit) async {
-    _currentPage = 1;
-    _hasMore = true;
-    emit(PostLoading());
-    final results = await getAllPosts(PaginationParams(page: _currentPage, limit: _limit));
-    emit(
-      results.fold(
-        (failure) {
-          logService.w(
-            '$failure occur at _onGetAllPosts(GetAllPostsEvent event, Emitter<PostState> emit)',
-          );
-          return PostError(failure: failure);
-        },
-        (posts) {
-          if (posts.isEmpty) {
-            _hasMore = false;
-          }
-          return PostsLoaded(posts: posts, hasMore: _hasMore);
-        },
-      ),
+    final results = await getAllPosts(
+      PaginationParams(page: _allPostPS.currentPage, limit: _allPostPS.limit),
+    );
+
+    results.fold(
+      (failure) {
+        logService.e(
+          '$failure occur at _onGetAllPosts(GetAllPostsEvent event, Emitter<PostState> emit)',
+        );
+        emit(PostError(failure: failure));
+      },
+      (posts) {
+        _handleGetListPosts(emit: emit, posts: posts, ps: _allPostPS);
+      },
     );
   }
 
-  Future<void> _onLoadMorePosts(LoadMorePostsEvent event, Emitter<PostState> emit) async {
-    if (!_hasMore) return;
-
-    final currentState = state;
-    if (currentState is PostsLoaded && currentState.hasMore == true) {
-      _currentPage++;
-      emit(PostLoading());
-      final results = await getAllPosts(PaginationParams(page: _currentPage, limit: _limit));
-      results.fold(
-        (failure) {
-          logService.w(
-            '$failure occur at _onGetAllPosts(GetAllPostsEvent event, Emitter<PostState> emit)',
-          );
-          return PostError(failure: failure);
-        },
-        (newPosts) {
-          if (newPosts.isEmpty) {
-            _hasMore = false;
-          }
-          emit(PostsLoaded(posts: currentState.posts + newPosts, hasMore: _hasMore));
-        },
-      );
+  void _handleGetListPosts({
+    required List<PostEntity> posts,
+    required PaginationStorage ps,
+    required Emitter<PostState> emit,
+  }) {
+    if (posts.isEmpty) {
+      ps.hasMore = false;
+      if (state is PostsLoaded) {
+        emit((state as PostsLoaded).copyWith(hasMore: false));
+        return;
+      } else {
+        emit(PostsLoaded(posts: [], hasMore: false));
+        return;
+      }
     }
+
+    ps.currentPage++;
+
+    if (state is PostsLoaded) {
+      emit((state as PostsLoaded).copyWith(posts: posts));
+      return;
+    } else {
+      emit(PostsLoaded(posts: posts, hasMore: true));
+      return;
+    }
+  }
+
+  PaginationStorage _searchPostsPS = PaginationStorage();
+  String _currentSearchQuery = '';
+
+  Future<void> _onSearchPosts(SearchPostsEvent event, Emitter<PostState> emit) async {
+    if (event.query != _currentSearchQuery) _searchPostsPS = PaginationStorage();
+    _currentSearchQuery = event.query;
+
+    final results = await searchPosts(
+      PaginationWithSearchParams(
+        page: _searchPostsPS.currentPage,
+        limit: _searchPostsPS.limit,
+        search: event.query,
+      ),
+    );
+
+    results.fold(
+      (failure) {
+        logService.w(
+          '$failure occur at _onGetAllPosts(GetAllPostsEvent event, Emitter<PostState> emit)',
+        );
+        return emit(PostError(failure: failure));
+      },
+      (posts) {
+        _handleGetListPosts(emit: emit, posts: posts, ps: _searchPostsPS);
+      },
+    );
   }
 
   Future<void> _onGetPostById(GetPostByIdEvent event, Emitter<PostState> emit) async {
@@ -108,7 +130,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           '$failure occur at _onGetAllPosts(GetAllPostsEvent event, Emitter<PostState> emit)',
         );
         return PostError(failure: failure);
-      }, (post) => PostLoaded(posts: post)),
+      }, (post) => PostLoaded(post: post)),
     );
   }
 
@@ -148,32 +170,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         );
         return PostError(failure: failure);
       }, (_) => PostDeleted()),
-    );
-  }
-
-  Future<void> _onSearchPosts(SearchPostsEvent event, Emitter<PostState> emit) async {
-    _currentPage = 1;
-
-    _hasMore = true;
-    emit(PostLoading());
-    final results = await searchPosts(
-      PaginationWithSearchParams(page: _currentPage, limit: _limit, search: event.query),
-    );
-    emit(
-      results.fold(
-        (failure) {
-          logService.w(
-            '$failure occur at _onGetAllPosts(GetAllPostsEvent event, Emitter<PostState> emit)',
-          );
-          return PostError(failure: failure);
-        },
-        (posts) {
-          if (posts.isEmpty) {
-            _hasMore = false;
-          }
-          return PostsLoaded(posts: posts, hasMore: _hasMore);
-        },
-      ),
     );
   }
 

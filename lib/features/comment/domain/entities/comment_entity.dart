@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import '../../../user/domain/entities/user_entity.dart';
 
@@ -9,15 +10,16 @@ class CommentEntity extends Equatable {
   final String body;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final Key key;
 
-  const CommentEntity({
+  CommentEntity({
     required this.id,
     required this.postId,
     required this.user,
     required this.body,
     required this.createdAt,
     required this.updatedAt,
-  });
+  }) : key = UniqueKey();
 
   @override
   List<Object?> get props => [id, postId, user, body, createdAt, updatedAt];

@@ -10,7 +10,7 @@ class NoParams extends Equatable {
 class PaginationParams extends Equatable {
   final int page;
   final int limit;
-  final PaginationOrder? order;
+  final PaginationOrder order;
 
   const PaginationParams({
     required this.page,
@@ -28,6 +28,7 @@ class PaginationWithSearchParams extends PaginationParams {
   const PaginationWithSearchParams({
     required super.page,
     required super.limit,
+    super.order,
     required this.search,
   });
 

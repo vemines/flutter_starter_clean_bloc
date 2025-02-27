@@ -86,40 +86,6 @@ void main() {
     );
   });
 
-  group('LoadMorePostsEvent', () {
-    blocTest<PostBloc, PostState>(
-      'should emit [PostLoadingMore, PostLoaded] on success',
-      build: () {
-        when(() => mockGetAllPosts(any())).thenAnswer((_) async => Right(tPostEntities));
-        return bloc;
-      },
-      seed: () => PostsLoaded(posts: [], hasMore: true),
-      act: (bloc) => bloc.add(LoadMorePostsEvent()),
-      expect: () => [PostLoading(), PostsLoaded(posts: tPostEntities, hasMore: true)],
-    );
-
-    blocTest<PostBloc, PostState>(
-      'should emit [PostLoadingMore, PostLoaded(hasMore: false)] when no more data',
-      build: () {
-        when(() => mockGetAllPosts(any())).thenAnswer((_) async => Right([]));
-        return bloc;
-      },
-      seed: () => PostsLoaded(posts: [], hasMore: true),
-      act: (bloc) => bloc.add(LoadMorePostsEvent()),
-      expect: () => [PostLoading(), PostsLoaded(posts: [], hasMore: false)],
-    );
-
-    blocTest<PostBloc, PostState>(
-      'should not emit anything if hasMore is already false',
-      build: () {
-        return bloc;
-      },
-      seed: () => PostsLoaded(posts: [], hasMore: false),
-      act: (bloc) => bloc.add(LoadMorePostsEvent()),
-      expect: () => [],
-    );
-  });
-
   group('GetPostByIdEvent', () {
     blocTest<PostBloc, PostState>(
       'should emit [PostLoading, PostLoaded] on success',
@@ -128,7 +94,7 @@ void main() {
         return bloc;
       },
       act: (bloc) => bloc.add(GetPostByIdEvent(id: tPostEntity.id)),
-      expect: () => [PostLoading(), PostLoaded(posts: tPostEntity)],
+      expect: () => [PostLoading(), PostLoaded(post: tPostEntity)],
     );
 
     blocTest<PostBloc, PostState>(

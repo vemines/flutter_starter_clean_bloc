@@ -2,11 +2,11 @@ const String kServerFailureMessage = 'Server Failure';
 const String kNoCacheFailureMessage = 'No Cache Failure';
 const String kNoInternetFailureMessage = 'No Internet Connection';
 const String kInvalidInputFailureMessage = 'Invalid Input';
-const String kUnauthenticatedFailure = 'Authenticated Failure';
+const String kUnauthenticatedFailureMessage = 'Authenticated Failure';
 const String kTimeoutFailure = 'Connection Error.  Check your internet connection';
 
 // const String kInvalidEmailFailureMessage = 'Invalid Email Format';
 // const String kPasswordTooShortFailureMessage = 'Password is too short';
 // const String kUsernameEmptyFailureMessage = 'Username cannot be empty';
 
-const String kInvalidCredentialsExceptionMessage = "Invalid username or password.";
+const String kInvalidCredentialsFailureMessage = "Invalid username or password.";

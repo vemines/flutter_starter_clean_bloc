@@ -2,7 +2,7 @@ import '../../../../core/constants/api_mapping.dart';
 import '../../domain/entities/post_entity.dart';
 
 class PostModel extends PostEntity {
-  const PostModel({
+  PostModel({
     required super.id,
     required super.userId,
     required super.title,

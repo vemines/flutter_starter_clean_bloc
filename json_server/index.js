@@ -1,11 +1,20 @@
 // index.js
+const { faker } = require('@faker-js/faker');
 const jsonServer = require('@wll8/json-server');
 const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
+const _ = require('lodash');
 
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
+
+const delayMiddleware = (delay) => (req, res, next) => {
+  setTimeout(next, delay);
+};
+
+const DELAY_MS = 500;
+server.use(delayMiddleware(DELAY_MS));
 
 // Custom middleware for request modification
 server.use((req, res, next) => {
@@ -75,6 +84,7 @@ server.post('/api/v1/register', (req, res) => {
     username,
     email,
     password,
+    about: faker.lorem.paragraphs(),
     avatar: 'https://i.pravatar.cc/300',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -87,29 +97,6 @@ server.post('/api/v1/register', (req, res) => {
   const { password: _, ...userWithoutPassword } = newUser;
   res.status(201).jsonp({ secret: secretText, ...userWithoutPassword }); // 201 Created
 });
-
-// Custom output for LIST with pagination
-router.render = (req, res) => {
-  const headers = res.getHeaders();
-  const totalCountHeader = headers['x-total-count'];
-
-  if (req.method === 'GET' && totalCountHeader) {
-    const queryParams = req._parsedUrl.query;
-    const queryObject = Object.fromEntries(new URLSearchParams(queryParams));
-
-    const result = {
-      data: res.locals.data,
-      pagination: {
-        _page: Number.parseInt(queryObject._page) || 1,
-        _limit: Number.parseInt(queryObject._limit) || 10,
-        _totalRows: Number.parseInt(totalCountHeader),
-      },
-    };
-    return res.jsonp(result);
-  }
-
-  res.jsonp(res.locals.data);
-};
 
 // Get single post + comments
 server.get('/api/v1/posts/:id/details', (req, res) => {
@@ -243,10 +230,24 @@ server.post('/api/v1/posts/:postId/comments', (req, res) => {
 // Get comments for a post with user details (reload post comments)
 server.get('/api/v1/posts/:postId/comments', (req, res) => {
   const postId = parseInt(req.params.postId);
-  const comments = router.db.get('comments').filter({ postId }).value();
+  const page = parseInt(req.query._page) || 1;
+  const limit = parseInt(req.query._limit) || 10;
+  const sortField = req.query._sort || 'updatedAt';
+  const sortOrder = req.query._order || 'desc';
+
+  let comments = router.db.get('comments').filter({ postId }).value();
+
+  // Sorting
+  comments = _.orderBy(comments, [sortField], [sortOrder]);
+
+  // Pagination
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  comments = comments.slice(startIndex, endIndex);
 
   const commentsWithUserDetails = comments.map((comment) => {
     const user = router.db.get('users').find({ id: comment.userId }).value();
+    if (!user) return { ...comment, user: null }; //Handle case no user;
     const { password, ...userWithoutPassword } = user; //remove password
     return {
       ...comment,

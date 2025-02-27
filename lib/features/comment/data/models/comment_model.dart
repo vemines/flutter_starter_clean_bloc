@@ -1,11 +1,11 @@
-import 'package:flutter_starter_clean_bloc/features/user/domain/entities/user_entity.dart';
+import '../../../user/domain/entities/user_entity.dart';
 
 import '../../../../core/constants/api_mapping.dart';
 import '../../../user/data/models/user_model.dart';
 import '../../domain/entities/comment_entity.dart';
 
 class CommentModel extends CommentEntity {
-  const CommentModel({
+  CommentModel({
     required super.id,
     required super.postId,
     required super.user,

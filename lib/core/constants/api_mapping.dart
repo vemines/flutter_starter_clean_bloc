@@ -4,9 +4,11 @@ class UserApiMap {
   static const String kUserName = 'username';
   static const String kEmail = 'email';
   static const String kAvatar = 'avatar';
+  static const String kCover = 'cover';
   static const String kSecret = 'secret';
   static const String kBookmarksId = 'bookmarkedPosts';
   static const String kFriendIds = 'friendIds';
+  static const String kAbout = 'about';
 }
 
 class PostApiMap {
